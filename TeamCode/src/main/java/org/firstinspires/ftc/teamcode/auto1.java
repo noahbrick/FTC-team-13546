@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
@@ -47,7 +48,7 @@ public class auto1 extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
-
+        OpticalDistanceSensor odsSensor;
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to run");    //
         telemetry.update();
@@ -69,21 +70,62 @@ public class auto1 extends LinearOpMode {
 
 
         // Step 1:  Drive forward for 3 seconds
-        robot.leftwheel.setPower(-FORWARD_SPEED);
-        robot.rightwheel.setPower(-FORWARD_SPEED);
+        robot.leftwheel.setPower(FORWARD_SPEED);
+        robot.rightwheel.setPower(FORWARD_SPEED);
+        robot.leftoniwheel.setPower(FORWARD_SPEED);
+        robot.rightoniwheel.setPower(FORWARD_SPEED);
+
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+        /* while (opModeIsActive() && (runtime.seconds() < 1.5)) {
             telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
             telemetry.update();
-        }
+        } */
+
+        odsSensor = hardwareMap.get(OpticalDistanceSensor.class, "light sensor");
+
+        // wait for the start button to be pressed.
+        waitForStart();
+
+        // while the op mode is active, loop and read the light levels.
+        // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
+        while (opModeIsActive()) {
+
+            // send the info back to driver station using telemetry function.
+            telemetry.addData("Raw", odsSensor.getRawLightDetected());
+            telemetry.addData("Normal", odsSensor.getLightDetected());
+
+            telemetry.update();
+
+
+            if (odsSensor.getLightDetected() > 0.05) {
+                robot.leftwheel.setPower(-1);
+                robot.rightwheel.setPower(-1);
+                robot.leftoniwheel.setPower(-1);
+                robot.rightoniwheel.setPower(-1);
+                runtime.reset();
+                while (opModeIsActive() && (runtime.seconds() < 1.3)) {
+                    telemetry.addData("Path", "Leg 2: %2.5f S Elapsed", runtime.seconds());
+                    telemetry.update();
+                }
+                robot.leftwheel.setPower(1);
+                robot.rightwheel.setPower(1);
+                robot.leftoniwheel.setPower(1);
+                robot.rightoniwheel.setPower(1);
+                
+            } }
+
+
+
 
 
 
         // Step 4:  Stop and close the claw.
         robot.leftwheel.setPower(0);
         robot.rightwheel.setPower(0);
+        robot.leftoniwheel.setPower(0);
+        robot.rightoniwheel.setPower(0);
         robot.blockmover.setPower(0);
-        robot.relicgrabber.setPower(0);
+        //robot.relicgrabber.setPower(0);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

@@ -64,7 +64,7 @@ class hardwareMap {
         rightoniwheel = hwMap.get(DcMotor.class, "rightonidrive");
         leftoniwheel = hwMap.get(DcMotor.class, "leftonidrive");
 
-        //blockmover = hwMap.get(DcMotor.class, "blockmove");
+        blockmover = hwMap.get(DcMotor.class, "blockmove");
        // relicgrabber = hwMap.get(DcMotor.class, "relicgrabber");
 
         leftwheel.setDirection(DcMotor.Direction.REVERSE);
@@ -76,7 +76,7 @@ class hardwareMap {
         rightoniwheel.setPower(0);
         leftoniwheel.setPower(0);
 
-        //blockmover.setPower(0);
+        blockmover.setPower(0);
        // relicgrabber.setPower(0);
 
 
@@ -86,7 +86,7 @@ class hardwareMap {
         leftoniwheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightoniwheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        //blockmover.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        blockmover.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         /* leftarm = hwMap.get(Servo.class, "leftarmtop");
         rightarm = hwMap.get(Servo.class, "rightarmtop");
